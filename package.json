@@ -1,0 +1,37 @@
+{
+  "name": "blog",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vuepress dev .",
+    "build": "vuepress build .",
+    "deploy": "gulp deploy"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wjq990112/Blog.git"
+  },
+  "keywords": [
+    "Jack's",
+    "Blog"
+  ],
+  "author": "wjq990112",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/wjq990112/Blog/issues"
+  },
+  "homepage": "https://github.com/wjq990112/Blog#readme",
+  "dependencies": {},
+  "devDependencies": {
+    "commitizen": "^4.0.3",
+    "cz-conventional-changelog": "^3.1.0",
+    "gulp": "^4.0.2",
+    "gulp-sftp-up4": "^0.1.8"
+  },
+  "config": {
+    "commitizen": {
+      "path": "node_modules/cz-conventional-changelog"
+    }
+  }
+}
