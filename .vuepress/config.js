@@ -4,6 +4,9 @@
 module.exports = {
   title: 'Jack\'s Blog',
   description: 'LifeLong Learn.',
+  head: [
+    ['link', { rel: 'icon', href: '.vuepress/pubilc/logo.png' }]
+  ],
   themeConfig: {
     logo: '/assets/img/logo.png',
     nav: [

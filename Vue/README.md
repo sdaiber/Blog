@@ -1,0 +1,111 @@
+## 响应式原理（ES5）
+
+```javascript
+var data = {
+  name: 'Jack Wang',
+  age: 21,
+  salary: 3500,
+  array: ['Jack', 'should', 'fighting']
+}
+// 模拟渲染
+function render() {
+  console.log('render');
+}
+// 定义需要重写的数组方法
+var method = ['push', 'pop', 'unshift', 'shift', 'reverse', 'sort', 'splice'];
+// 获取数组原型
+var arrayProto = Array.prototype;
+// 创建新的原型对象
+var proto = Object.create(arrayProto);
+// 遍历需要重写的数组方法
+method.forEach(function (method) {
+  // 修改新的原型对象
+  proto[method] = function () {
+    // 调用数组原型方法
+    var res = arrayProto[method].call(this, ...arguments);
+    render();
+    return res;
+  }
+});
+// 数据劫持/代理方法
+function observe(obj) {
+  // 非对象类型直接返回
+  if (!obj || typeof obj !== 'object') {
+    return;
+  }
+  // 为数组则将新的原型添加到其原型链上
+  if (Array.isArray(obj)) {
+    obj.__proto__ = proto;
+    return;
+  }
+  // 遍历对象 key 将其传入
+  Object.keys(obj).forEach(function (key) {
+    defineReactive(obj, key, obj[key]);
+  });
+}
+// 设置对象属性
+function defineReactive(obj, key, value) {
+  // 递归子属性
+  observe(value);
+  Object.defineProperty(obj, key, {
+    // 重写 getter
+    get: function () {
+      console.log('get');
+      return value;
+    },
+    // 重写 setter
+    set: function (newValue) {
+      console.log('set', newValue);
+      // 递归子属性
+      observe(newValue);
+      // 若新值不等于旧值 则发生渲染
+      if (newValue !== value) {
+        value = newValue;
+        render();
+      }
+    }
+  })
+}
+// 进行数据劫持/代理
+observe(data);
+
+```
+
+## 响应式原理（ES6 Proxy）
+
+```javascript
+var data = {
+  name: "Jack Wang",
+  age: 21,
+  salary: 3500,
+  array: ["Jack", "will", "be", "the", "best"]
+}
+// 模拟渲染
+function render(params) {
+  console.log("render");
+}
+// 代理逻辑
+var handler = {
+  get(target, key) {
+    console.log("get");
+    // 若获取到的值为对象 则递归
+    if (typeof target[key] === "object" && target[key] !== null) {
+      return new Proxy(target[key], key);
+    }
+    return Reflect.get(target, key);
+  },
+  set(target, key, value) {
+    console.log("set", value);
+    // 若设置对象的 length 属性 则直接返回
+    if (key === "length") {
+      return;
+    }
+    Reflect.set(target, key, value);
+    render();
+  }
+}
+// 数据代理
+var proxy = new Proxy(data, handler);
+
+```
+
