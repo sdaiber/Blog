@@ -7,6 +7,7 @@
 ## CSS
 
 - [CSS 制作动画常用技巧](/css/001.html)
+- [HTML + CSS 打造 iOS Switch 开关](/css/002.html)
 
 ## JavaScript
 
